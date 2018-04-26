@@ -108,22 +108,22 @@ public class JsonReader extends BufferedReader {
                     toret = TokenType.STRING;
                 }
                 else
-                if ( ch == '{' )
+                if ( ch == Util.OPEN_OBJECT_DELIMITER )
                 {
                     toret = TokenType.OPEN_OBJECT;
                 }
                 else
-                if ( ch == '[' )
+                if ( ch == Util.OPEN_ARRAY_DELIMITER )
                 {
                     toret = TokenType.OPEN_ARRAY;
                 }
                 else
-                if ( ch == '}' )
+                if ( ch == Util.END_OBJECT_DELIMITER )
                 {
                     toret = TokenType.CLOSE_OBJECT;
                 }
                 else
-                if ( ch == ']' )
+                if ( ch == Util.END_ARRAY_DELIMITER )
                 {
                     toret = TokenType.CLOSE_ARRAY;
                 }
@@ -157,11 +157,6 @@ public class JsonReader extends BufferedReader {
         while ( ch != -1
              && isValidCharForToken( ch ) )
         {
-            if ( ch == '\\' ) {
-                this.reader.unread( ch );
-                ch = this.parseSpecialChar();
-            }
-
             token.append( ch );
             ch = this.reader.read();
         }
@@ -177,28 +172,28 @@ public class JsonReader extends BufferedReader {
     public void beginObject() throws IOException
     {
         this.skipSpaces();
-        this.match( '{' );
+        this.match( Util.OPEN_OBJECT_DELIMITER );
         this.skipSpaces();
     }
 
     public void endObject() throws IOException
     {
         this.skipSpaces();
-        this.match( '}' );
+        this.match( Util.END_OBJECT_DELIMITER );
         this.skipSpaces();
     }
 
     public void beginArray() throws IOException
     {
         this.skipSpaces();
-        this.match( '[' );
+        this.match( Util.OPEN_ARRAY_DELIMITER );
         this.skipSpaces();
     }
 
     public void endArray() throws IOException
     {
         this.skipSpaces();
-        this.match( ']' );
+        this.match( Util.END_ARRAY_DELIMITER );
         this.skipSpaces();
     }
 
@@ -231,23 +226,49 @@ public class JsonReader extends BufferedReader {
         return;
     }
 
-    /** @return the next name in the JSON stream. */
-    public String nextName() throws IOException
+    /** @return true if there are quotes ahead, false otherwise. It does not consume anything. */
+    private boolean areQuotesAhead() throws IOException
     {
-        String toret = null;
+        boolean toret = false;
 
-        // Read next char
         this.skipSpaces();
-        int ch = this.reader.read();
-        this.reader.unread( ch );
 
-        // Check for quotes or double-quotes
+        int ch = this.reader.read();
+
         if ( ch == '"'
           || ch == '\'' )
         {
-            toret = this.nextString();
+            toret = true;
+        }
+
+        this.reader.unread( ch );
+        return toret;
+    }
+
+    /** @return the next name in the JSON stream. */
+    public String nextName() throws IOException
+    {
+        int quotes = -1;
+        String toret = null;
+
+        // Check for quotes or double-quotes
+        if ( this.areQuotesAhead() ) {
+            quotes = this.reader.read();
+        }
+
+        toret = this.getToken();
+
+        if ( quotes >= 0
+          && this.areQuotesAhead() )
+        {
+            int endQuotes = this.reader.read();
+
+            if ( quotes != endQuotes ) {
+                throw new IOException( "expected: " + ( (char) quotes )
+                                        + " got: " +  ( (char) endQuotes ) );
+            }
         } else {
-            toret = this.getToken();
+            throw new IOException( "expected: " + ( (char) quotes ) );
         }
 
         return toret;
@@ -257,32 +278,37 @@ public class JsonReader extends BufferedReader {
      *          in single or double quotes. */
     public String nextString() throws IOException
     {
-        String toret = null;
+        StringBuilder toret = new StringBuilder();
         int ch;
         int quotes = -1;
 
-        // Advance
-        this.skipSpaces();
-        ch = this.reader.read();
-
         // Check for quotes or double-quotes
-        if ( ch == '"'
-          || ch == '\'' )
-        {
-            quotes = ch;
+        if ( this.areQuotesAhead() ) {
+            quotes = this.reader.read();
         } else {
             throw new IOException( "expected quotes: ' or double quotes: \"" );
         }
 
         // Read the id inside
-        toret = this.getToken();
+        ch = this.reader.read();
+        while( ch != -1
+            && ch != quotes )
+        {
+            if ( ch == '\\' ) {
+                this.reader.unread( ch );
+                ch = this.parseSpecialChar();
+            }
+
+            toret.append( (char) ch );
+            ch = this.reader.read();
+        }
 
         // Read quotes if they were present
         if ( quotes != -1 ) {
             this.match( (char) quotes );
         }
 
-        return toret;
+        return toret.toString();
     }
 
     /** Closes the reader. */
