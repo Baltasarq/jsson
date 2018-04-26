@@ -2,9 +2,10 @@
 
 package com.devbaltasarq.jsson;
 
-import jdk.nashorn.internal.parser.Token;
-
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.PushbackReader;
+import java.io.Reader;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -12,7 +13,7 @@ import java.util.logging.Logger;
  * Creates a new JSON reader.
  * @author baltasarq
  */
-public class JsonReader extends InputStreamReader {
+public class JsonReader extends BufferedReader {
     private static final String TOKEN_VALID_CHARS = "_0123456789abcdefghijklmnopqrstuvvwxyz";
     public enum TokenType { ERROR, END, UNESCAPED_ID, STRING, NUMBER,
         OPEN_OBJECT, CLOSE_OBJECT,
@@ -22,25 +23,10 @@ public class JsonReader extends InputStreamReader {
     /** Creates a new JsonReader, given an input stream.
      * @param input an input stream to read from.
      */
-    public JsonReader(InputStream input)
+    public JsonReader(Reader input)
     {
         super( input );
-        this.init();
-    }
 
-    /** Creates a new JsonReader, given an input stream and the name of an encoding.
-     * @param input an input stream to read from.
-     * @param charsetName the name of the charset
-     * @throws UnsupportedEncodingException if something goes wrong parsing the charset
-     */
-    public JsonReader(InputStream input, String charsetName) throws UnsupportedEncodingException
-    {
-        super( input, charsetName );
-        this.init();
-    }
-
-    private void init()
-    {
         this.reader = new PushbackReader( this );
     }
 
