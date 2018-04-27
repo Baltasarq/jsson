@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/jsson.iml" filepath="$PROJECT_DIR$/jsson.iml" />
+      <module fileurl="file://$PROJECT_DIR$/jssontesting/jssontesting.iml" filepath="$PROJECT_DIR$/jssontesting/jssontesting.iml" />
     </modules>
   </component>
 </project>

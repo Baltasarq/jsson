@@ -1,4 +1,4 @@
-// jsson (c) Baltasar MIT License 2018 <baltasarq@gmail.com>
+// jsson (c) 2018 Baltasar MIT License <baltasarq@gmail.com>
 
 package com.devbaltasarq.jsson;
 

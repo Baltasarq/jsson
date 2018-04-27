@@ -3,8 +3,12 @@
   <component name="ChangeListManager">
     <list default="true" id="f96489d6-9329-44fc-8435-a6ba2f1460fe" name="Default" comment="">
       <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/devbaltasarq/jsson/Util.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/jssontesting/jssontesting.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/jssontesting/src/JsonReaderTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/jsson.iml" beforeDir="false" afterPath="$PROJECT_DIR$/jsson.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/devbaltasarq/jsson/JsonReader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/devbaltasarq/jsson/JsonReader.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/devbaltasarq/jsson/JsonWriter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/devbaltasarq/jsson/JsonWriter.java" afterDir="false" />
     </list>
@@ -18,11 +22,20 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="JsonReader.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="JsonReader.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/devbaltasarq/jsson/JsonReader.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="136">
-              <caret line="309" lean-forward="true" selection-start-line="309" selection-end-line="309" />
+            <state>
+              <caret column="39" selection-start-column="39" selection-end-column="39" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="JsonReaderTest.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/jssontesting/src/JsonReaderTest.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="238">
+              <caret line="20" column="68" selection-start-line="20" selection-start-column="68" selection-end-line="20" selection-end-column="68" />
             </state>
           </provider>
         </entry>
@@ -30,8 +43,8 @@
       <file leaf-file-name="JsonWriter.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/devbaltasarq/jsson/JsonWriter.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="187">
-              <caret line="11" lean-forward="true" selection-start-line="11" selection-end-line="11" />
+            <state>
+              <caret column="39" selection-start-column="39" selection-end-column="39" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#142#143#0" expanded="true" />
@@ -45,7 +58,7 @@
         <entry file="file://$PROJECT_DIR$/src/com/devbaltasarq/jsson/Util.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="136">
-              <caret line="8" column="44" lean-forward="true" selection-start-line="8" selection-start-column="44" selection-end-line="8" selection-end-column="44" />
+              <caret line="8" column="44" selection-start-line="8" selection-start-column="44" selection-end-line="8" selection-end-column="44" />
             </state>
           </provider>
         </entry>
@@ -56,6 +69,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Class" />
+        <option value="JUnit4 Test Class" />
       </list>
     </option>
   </component>
@@ -65,9 +79,12 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/com/devbaltasarq/jsson/JsonWriter.java" />
         <option value="$PROJECT_DIR$/src/com/devbaltasarq/jsson/Util.java" />
+        <option value="$PROJECT_DIR$/src/com/devbaltasarq/jsson/JsonReaderTest.java" />
+        <option value="$PROJECT_DIR$/src/com/devbaltasarq/jsson/testing/JsonReaderTest.java" />
+        <option value="$PROJECT_DIR$/src/com/devbaltasarq/jsson/JsonWriter.java" />
         <option value="$PROJECT_DIR$/src/com/devbaltasarq/jsson/JsonReader.java" />
+        <option value="$PROJECT_DIR$/jssontesting/src/JsonReaderTest.java" />
       </list>
     </option>
   </component>
@@ -95,6 +112,17 @@
             <path>
               <item name="jsson" type="b2602c69:ProjectViewProjectNode" />
               <item name="jsson" type="462c0819:PsiDirectoryNode" />
+              <item name="jssontesting" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="jsson" type="b2602c69:ProjectViewProjectNode" />
+              <item name="jsson" type="462c0819:PsiDirectoryNode" />
+              <item name="jssontesting" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="jsson" type="b2602c69:ProjectViewProjectNode" />
+              <item name="jsson" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -111,7 +139,21 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
+    <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary" value="JUnit4" />
+    <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit4" value="" />
+    <property name="create.test.in.the.same.root" value="true" />
+    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="project.structure.side.proportion" value="0.2" />
     <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CreateTestDialog.RecentsKey">
+      <recent name="com.devbaltasarq.jsson" />
+    </key>
+    <key name="CreateTestDialog.Recents.Supers">
+      <recent name="" />
+    </key>
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -125,20 +167,37 @@
       </list>
     </option>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="JUnit.JsonReaderTest.testEmptyObject">
     <configuration name="Kk" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.devbaltasarq.jsson.Kk" />
       <module name="jsson" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.devbaltasarq.jsson.*" />
+          <option name="PATTERN" value=".*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
     </configuration>
     <configuration default="true" type="Application" factoryName="Application">
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+    </configuration>
+    <configuration name="JsonReaderTest.testEmptyObject" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="jssontesting" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="MAIN_CLASS_NAME" value="JsonReaderTest" />
+      <option name="METHOD_NAME" value="testEmptyObject" />
+      <option name="TEST_OBJECT" value="method" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="%MODULE_WORKING_DIR%" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="singleModule" />
+      </option>
+      <patterns />
     </configuration>
     <configuration default="true" type="JUnit" factoryName="JUnit">
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
@@ -178,8 +237,13 @@
       <properties />
       <listeners />
     </configuration>
+    <list>
+      <item itemvalue="Application.Kk" />
+      <item itemvalue="JUnit.JsonReaderTest.testEmptyObject" />
+    </list>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.JsonReaderTest.testEmptyObject" />
         <item itemvalue="Application.Kk" />
       </list>
     </recent_temporary>
@@ -207,9 +271,9 @@
       <window_info anchor="right" id="Palette&#9;" order="3" />
       <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" />
       <window_info anchor="right" id="Maven Projects" order="3" />
-      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.32925472" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.32925472" />
       <window_info anchor="bottom" id="Version Control" order="7" />
-      <window_info anchor="bottom" id="Terminal" order="7" weight="0.32945284" />
+      <window_info anchor="bottom" id="Terminal" order="7" visible="true" weight="0.26807564" />
       <window_info id="Designer" order="2" />
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.21577123" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -246,10 +310,17 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/devbaltasarq/jsson/Util.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="8" column="44" selection-start-line="8" selection-start-column="44" selection-end-line="8" selection-end-column="44" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/devbaltasarq/jsson/JsonWriter.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="11" lean-forward="true" selection-start-line="11" selection-end-line="11" />
+        <state>
+          <caret column="39" selection-start-column="39" selection-end-column="39" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#142#143#0" expanded="true" />
@@ -258,19 +329,93 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/devbaltasarq/jsson/Util.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="8" column="44" lean-forward="true" selection-start-line="8" selection-start-column="44" selection-end-line="8" selection-end-column="44" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/devbaltasarq/jsson/JsonReader.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="309" lean-forward="true" selection-start-line="309" selection-end-line="309" />
+        <state>
+          <caret column="39" selection-start-column="39" selection-end-column="39" />
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/jssontesting/src/JsonReaderTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="238">
+          <caret line="20" column="68" selection-start-line="20" selection-start-column="68" selection-end-line="20" selection-end-column="68" />
+        </state>
+      </provider>
+    </entry>
+  </component>
+  <component name="masterDetails">
+    <states>
+      <state key="ArtifactsStructureConfigurable.UI">
+        <settings>
+          <artifact-editor />
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="FacetStructureConfigurable.UI">
+        <settings>
+          <last-edited>No facets are configured</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="GlobalLibrariesConfigurable.UI">
+        <settings>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="JdkListConfigurable.UI">
+        <settings>
+          <last-edited>1.8</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ModuleStructureConfigurable.UI">
+        <settings>
+          <last-edited>jssontesting</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ProjectLibrariesConfigurable.UI">
+        <settings>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+    </states>
   </component>
 </project>
