@@ -65,7 +65,8 @@ public class JsonReader extends BufferedReader {
             final int ch = this.reader.read();
             this.reader.unread( ch );
 
-            if ( this.nextTokenType() == TokenType.CLOSE_ARRAY
+            if ( ch == -1
+              || this.nextTokenType() == TokenType.CLOSE_ARRAY
               || this.nextTokenType() == TokenType.CLOSE_OBJECT )
             {
                 toret = false;
@@ -150,14 +151,14 @@ public class JsonReader extends BufferedReader {
      */
     public String getToken() throws IOException
     {
-        StringBuffer token = new StringBuffer();
+        final StringBuilder token = new StringBuilder();
         int ch = this.reader.read();
 
         // Collect the id
         while ( ch != -1
              && isValidCharForToken( ch ) )
         {
-            token.append( ch );
+            token.append( (char) ch );
             ch = this.reader.read();
         }
 
@@ -197,14 +198,39 @@ public class JsonReader extends BufferedReader {
         this.skipSpaces();
     }
 
-    public String nextFloat() throws IOException
+    public double nextFloat() throws IOException
     {
         throw new IOException( "not implemented yet" );
     }
 
-    public String nextInt() throws IOException
+    public int nextInt() throws IOException
     {
-        throw new IOException( "not implemented yet" );
+        final StringBuilder token = new StringBuilder();
+
+        // Is there a '+' or '-'?
+        this.skipSpaces();
+        int ch = this.reader.read();
+
+        if ( ch == '-'
+          || ch == '+' )
+        {
+            token.append( (char) ch );
+            ch = this.reader.read();
+        }
+
+        // Now read the number itself
+        while ( ch != -1
+             && Character.isDigit( ch ) )
+        {
+            token.append( (char) ch );
+            ch = this.reader.read();
+        }
+
+        if ( token.length() == 0 ) {
+            throw new IOException( "expected int, but next char is: '" + (char) ch + "'" );
+        }
+
+        return Integer.valueOf( token.toString() );
     }
 
     /** If the given char is not found, throws an exception.
@@ -258,17 +284,24 @@ public class JsonReader extends BufferedReader {
 
         toret = this.getToken();
 
-        if ( quotes >= 0
-          && this.areQuotesAhead() )
-        {
-            int endQuotes = this.reader.read();
+        if ( quotes >= 0 ) {
+            if ( this.areQuotesAhead() ) {
+                int endQuotes = this.reader.read();
 
-            if ( quotes != endQuotes ) {
-                throw new IOException( "expected: " + ( (char) quotes )
-                                        + " got: " +  ( (char) endQuotes ) );
+                if ( quotes != endQuotes ) {
+                    throw new IOException( "expected: " + ( (char) quotes )
+                                            + " got: " +  ( (char) endQuotes ) );
+                }
+            } else {
+                throw new IOException( "expected: " + ( (char) quotes ) );
             }
-        } else {
-            throw new IOException( "expected: " + ( (char) quotes ) );
+        }
+
+        this.skipSpaces();
+        int colon = this.reader.read();
+
+        if ( colon != Util.NAME_SEPARATOR ) {
+            throw new IOException( "expected '" + Util.NAME_SEPARATOR + "' after name" );
         }
 
         return toret;
