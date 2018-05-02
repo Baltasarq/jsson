@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
 
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
@@ -182,6 +183,60 @@ public class JsonReaderTest {
             }
         } catch(IOException exc)  {
             assertFalse( "reading simple array: " + exc.getMessage(), true );
+        }
+    }
+
+    @Test
+    public void testMultileTypesObject()
+    {
+        boolean a = false;
+        boolean b = false;
+        double pi = -1;
+        int one = -1;
+        String author= "";
+        String jsonObject = "{\"a\": true, \"b\": false, \"pi\":3.14, \"one\":1, \"author\":\"baltasar\"}";
+
+        try {
+            // Read
+            final StringReader reader = new StringReader( jsonObject );
+            final JsonReader jsonReader = new JsonReader( reader );
+
+            jsonReader.beginObject();
+            while ( jsonReader.hasNext() ) {
+                final String nextName = jsonReader.nextName();
+
+                if ( nextName.equals( "a" ) ) {
+                    a = jsonReader.nextBoolean();
+                }
+                else
+                if ( nextName.equals( "b" ) ) {
+                    b = jsonReader.nextBoolean();
+                }
+                else
+                if ( nextName.equals( "pi" ) ) {
+                    pi = jsonReader.nextFloat();
+                }
+                else
+                if ( nextName.equals( "one" ) ) {
+                    one = jsonReader.nextInt();
+                }
+                else
+                if ( nextName.equals( "author" ) ) {
+                    author = jsonReader.nextString();
+                }
+            }
+            jsonReader.endObject();
+
+            // Chk
+            assertFalse( jsonReader.hasNext() );
+            assertTrue( a );
+            assertFalse( b );
+            assertEquals( 3.14, pi, 0.1 );
+            assertEquals( 1, one  );
+            assertEquals( "baltasar", author  );
+
+        } catch(IOException exc)  {
+            assertFalse( "reading multiple types object: " + exc.getMessage(), true );
         }
     }
 

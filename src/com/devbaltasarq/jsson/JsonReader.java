@@ -38,8 +38,7 @@ public class JsonReader extends BufferedReader {
 
             while( ch != -1 ) {
                 if ( !Character.isSpaceChar( ch )
-                  && ch != ','
-                  && ch != 10 )
+                  && Util.EXTRA_SEPARATORS.indexOf( ch ) < 0 )
                 {
                     this.reader.unread( ch );
                     break;
@@ -153,6 +152,8 @@ public class JsonReader extends BufferedReader {
     public String getToken() throws IOException
     {
         final StringBuilder token = new StringBuilder();
+
+        this.skipSpaces();
         int ch = this.reader.read();
 
         // Collect the id
@@ -201,8 +202,37 @@ public class JsonReader extends BufferedReader {
 
     public double nextFloat() throws IOException
     {
-        throw new IOException( "not implemented yet" );
+        final StringBuilder token = new StringBuilder();
+
+        // Is there a '+' or '-'?
+        this.skipSpaces();
+        int ch = this.reader.read();
+
+        if ( ch == '-'
+          || ch == '+' )
+        {
+            token.append( (char) ch );
+            ch = this.reader.read();
+        }
+
+        // Now read the number itself
+        while ( ch != -1
+             && ( Character.isDigit( ch )
+               || ch == '.' ) )
+        {
+            token.append( (char) ch );
+            ch = this.reader.read();
+        }
+
+        this.reader.unread( ch );
+        if ( token.length() == 0 ) {
+            throw new IOException( "expected float, but next char is: '" + (char) ch + "'" );
+        }
+
+        return Double.valueOf( token.toString() );
     }
+
+
 
     public int nextInt() throws IOException
     {
@@ -312,41 +342,83 @@ public class JsonReader extends BufferedReader {
     }
 
     /** @return the next string, no matter of being enclosed
-     *          in single or double quotes. */
+     *          in single or double quotes, or null if 'null' was found. */
     public String nextString() throws IOException
     {
-        StringBuilder toret = new StringBuilder();
+        String toret = null;
+        final StringBuilder buffer = new StringBuilder();
         int ch;
         int quotes = -1;
 
-        // Check for quotes or double-quotes
-        if ( this.areQuotesAhead() ) {
-            quotes = this.reader.read();
-        } else {
-            throw new IOException( "expected quotes: ' or double quotes: \"" );
-        }
+        this.skipSpaces();
 
-        // Read the id inside
-        ch = this.reader.read();
-        while( ch != -1
-            && ch != quotes )
-        {
-            if ( ch == '\\' ) {
-                this.reader.unread( ch );
-                ch = this.parseSpecialChar();
+        // Check for null
+        final String token = this.getToken();
+        if ( !token.equals( Util.NULL_ID ) ) {
+            this.reader.unread( token.toCharArray() );
+
+            // Check for quotes or double-quotes
+            if ( this.areQuotesAhead() ) {
+                quotes = this.reader.read();
+            } else {
+                throw new IOException( "expected quotes: ' or double quotes: \"" );
             }
 
-            toret.append( (char) ch );
+            // Read the id inside
             ch = this.reader.read();
+            while( ch != -1
+                && ch != quotes )
+            {
+                if ( ch == '\\' ) {
+                    this.reader.unread( ch );
+                    ch = this.parseSpecialChar();
+                }
+
+                buffer.append( (char) ch );
+                ch = this.reader.read();
+            }
+
+            // Read quotes if they were present
+            this.reader.unread( ch );
+            if ( quotes != -1 ) {
+                this.match( (char) quotes );
+            }
+
+            toret = buffer.toString();
         }
 
-        // Read quotes if they were present
-        this.reader.unread( ch );
-        if ( quotes != -1 ) {
-            this.match( (char) quotes );
+        return toret;
+    }
+
+    /** @return The read boolean value. */
+    public boolean nextBoolean() throws IOException
+    {
+        boolean toret = false;
+        final String token = this.getToken();
+
+        if ( token.equals( Boolean.toString( true ) ) ) {
+            toret = true;
+        }
+        else
+        if ( !token.equals( Boolean.toString( false ) ) ) {
+            this.reader.unread( token.toCharArray() );
+            throw new IOException( "expected boolean, not: '" + token + '\'' );
         }
 
-        return toret.toString();
+        return toret;
+    }
+
+    /** Reads a null value. */
+    public void nextNull() throws IOException
+    {
+        final String token = this.getToken();
+
+        if ( !token.equals( Util.NULL_ID ) ) {
+            this.reader.unread( token.toCharArray() );
+            throw new IOException( "expected null, not: '" + token + '\'' );
+        }
+
+        return;
     }
 
     /** Closes the reader. */
@@ -372,13 +444,10 @@ public class JsonReader extends BufferedReader {
 
             switch (ch) {
                 case '\\':
-                    ch = '\\';
                     break;
                 case '"':
-                    ch = '"';
                     break;
                 case '\'':
-                    ch = '\'';
                     break;
                 case 'n':
                     ch = '\n';
