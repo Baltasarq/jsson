@@ -38,7 +38,8 @@ public class JsonReader extends BufferedReader {
 
             while( ch != -1 ) {
                 if ( !Character.isSpaceChar( ch )
-                  && ch != ',' )
+                  && ch != ','
+                  && ch != 10 )
                 {
                     this.reader.unread( ch );
                     break;
@@ -226,6 +227,7 @@ public class JsonReader extends BufferedReader {
             ch = this.reader.read();
         }
 
+        this.reader.unread( ch );
         if ( token.length() == 0 ) {
             throw new IOException( "expected int, but next char is: '" + (char) ch + "'" );
         }
@@ -245,8 +247,8 @@ public class JsonReader extends BufferedReader {
         if ( readChar == -1
           || readChar != ch )
         {
-            throw new IOException( "expected: '" + readChar
-                                    + "', but found: '" + ch + "'" );
+            throw new IOException( "expected: '" + (char) ch
+                                    + "', but found: '" + readChar + "'" );
         }
 
         return;
@@ -301,7 +303,9 @@ public class JsonReader extends BufferedReader {
         int colon = this.reader.read();
 
         if ( colon != Util.NAME_SEPARATOR ) {
-            throw new IOException( "expected '" + Util.NAME_SEPARATOR + "' after name" );
+            throw new IOException( "expected '"
+                                    + Util.NAME_SEPARATOR
+                                    + "' after name ('" + toret + "'?)" );
         }
 
         return toret;
@@ -337,6 +341,7 @@ public class JsonReader extends BufferedReader {
         }
 
         // Read quotes if they were present
+        this.reader.unread( ch );
         if ( quotes != -1 ) {
             this.match( (char) quotes );
         }
