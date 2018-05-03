@@ -11,7 +11,7 @@ public class JsonWriter extends BufferedWriter {
     {
         super( wrt );
 
-        this.beginning = false;
+        this.beginning = this.inArray = this.nameJustWritten = false;
     }
 
     /** Writes the name part of a name/value pair.
@@ -33,7 +33,24 @@ public class JsonWriter extends BufferedWriter {
         this.write( name );
         this.write( Util.QUOTES );
         this.write( Util.NAME_SEPARATOR );
+
+        this.nameJustWritten = true;
         return this;
+    }
+
+    private void writeValueSeparator() throws IOException
+    {
+        if ( !this.beginning
+          && !this.nameJustWritten
+          && this.inArray )
+        {
+            this.write( Util.ENTITY_SEPARATOR );
+        } else {
+            this.beginning = false;
+        }
+
+        this.nameJustWritten = false;
+        return;
     }
 
     /** Writes a boolean value.
@@ -43,6 +60,7 @@ public class JsonWriter extends BufferedWriter {
       */
     public JsonWriter value(Boolean value) throws IOException
     {
+        this.writeValueSeparator();
         this.write( Boolean.toString( value ) );
         return this;
     }
@@ -54,6 +72,7 @@ public class JsonWriter extends BufferedWriter {
      */
     public JsonWriter value(int value) throws IOException
     {
+        this.writeValueSeparator();
         this.write( Integer.toString( value ) );
         return this;
     }
@@ -65,6 +84,7 @@ public class JsonWriter extends BufferedWriter {
      */
     public JsonWriter value(double value) throws IOException
     {
+        this.writeValueSeparator();
         this.write( Double.toString( value ) );
         return this;
     }
@@ -76,9 +96,11 @@ public class JsonWriter extends BufferedWriter {
      */
     public JsonWriter value(String value) throws IOException
     {
+        this.writeValueSeparator();
         this.write( Util.QUOTES );
         this.write( value );
         this.write( Util.QUOTES );
+
         return this;
     }
 
@@ -88,7 +110,9 @@ public class JsonWriter extends BufferedWriter {
      */
     public JsonWriter nullValue() throws IOException
     {
+        this.writeValueSeparator();
         this.write( Util.NULL_ID );
+
         return this;
     }
 
@@ -98,6 +122,7 @@ public class JsonWriter extends BufferedWriter {
       */
     public JsonWriter beginObject() throws IOException
     {
+        this.writeValueSeparator();
         this.beginning = true;
         this.write( Util.OPEN_OBJECT_DELIMITER );
         return this;
@@ -118,7 +143,9 @@ public class JsonWriter extends BufferedWriter {
      */
     public JsonWriter beginArray() throws IOException
     {
+        this.writeValueSeparator();
         this.beginning = true;
+        this.inArray = true;
         this.write( Util.OPEN_ARRAY_DELIMITER );
         return this;
     }
@@ -129,9 +156,12 @@ public class JsonWriter extends BufferedWriter {
      */
     public JsonWriter endArray() throws IOException
     {
+        this.inArray = false;
         this.write( Util.END_ARRAY_DELIMITER );
         return this;
     }
 
     private boolean beginning;
+    private boolean inArray;
+    private boolean nameJustWritten;
 }
