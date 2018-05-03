@@ -1,0 +1,11 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="jsson:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/jsson_jar</output-path>
+    <root id="archive" name="jsson.jar">
+      <element id="module-output" name="jsson" />
+      <element id="directory" name="META-INF">
+        <element id="file-copy" path="$PROJECT_DIR$/src/com/devbaltasarq/jsson/META-INF/MANIFEST.MF" />
+      </element>
+    </root>
+  </artifact>
+</component>

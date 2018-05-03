@@ -15,7 +15,8 @@ import java.util.logging.Logger;
  */
 public class JsonReader extends BufferedReader {
     private static final String TOKEN_VALID_CHARS = "_0123456789abcdefghijklmnopqrstuvvwxyz";
-    public enum TokenType { ERROR, END, UNESCAPED_ID, STRING, NUMBER,
+    public enum TokenType {
+        ERROR, END, UNESCAPED_ID, STRING, NUMBER, BOOLEAN, NULL,
         OPEN_OBJECT, CLOSE_OBJECT,
         OPEN_ARRAY, CLOSE_ARRAY }
 
@@ -27,7 +28,7 @@ public class JsonReader extends BufferedReader {
     {
         super( input );
 
-        this.reader = new PushbackReader( this );
+        this.reader = new PushbackReader( this, 256 );
     }
 
     /** Skips all spaces, tabs, newlines, commas... */
@@ -79,6 +80,7 @@ public class JsonReader extends BufferedReader {
         return toret;
     }
 
+    /** @return the type of the token ahead. */
     public TokenType nextTokenType()
     {
         TokenType toret = TokenType.ERROR;
@@ -92,6 +94,8 @@ public class JsonReader extends BufferedReader {
             this.reader.unread( ch );
             if ( ch != -1 ) {
                 if ( Character.isDigit( ch )
+                  || ch == '+'
+                  || ch == '-'
                   || ch == '.' )
                 {
                     toret = TokenType.NUMBER;
@@ -100,7 +104,16 @@ public class JsonReader extends BufferedReader {
                 if ( Character.isLetter( ch )
                   || ch == '_' )
                 {
-                    toret = TokenType.UNESCAPED_ID;
+                    if ( this.isNullAhead() ) {
+                        toret = TokenType.NULL;
+                    }
+                    else
+                    if ( this.isBooleanAhead() ) {
+                        toret = TokenType.BOOLEAN;
+                    }
+                    else {
+                        toret = TokenType.UNESCAPED_ID;
+                    }
                 }
                 else
                 if ( ch == '\''
@@ -145,6 +158,27 @@ public class JsonReader extends BufferedReader {
         return TOKEN_VALID_CHARS.indexOf( Character.toLowerCase( c ) ) >= 0;
     }
 
+    /** @return true when the next token is null, false otherwise. */
+    public boolean isBooleanAhead() throws IOException
+    {
+        this.skipSpaces();
+        final String token = this.getToken();
+
+        this.reader.unread( token.toCharArray() );
+        return token.equals( Boolean.toString( true ) )
+            || token.equals( Boolean.toString( false ) );
+    }
+
+    /** @return true when the next token is null, false otherwise. */
+    public boolean isNullAhead() throws IOException
+    {
+        this.skipSpaces();
+        final String token = this.getToken();
+
+        this.reader.unread( token.toCharArray() );
+        return token.equals( Util.NULL_ID );
+    }
+
     /** Gets the next identifier.
      * @return the identifier, as a string.
      * @throws IOException if reading goes wrong.
@@ -164,11 +198,7 @@ public class JsonReader extends BufferedReader {
             ch = this.reader.read();
         }
 
-        // Push back the last char read, if possible
-        if ( ch != -1 ) {
-            this.reader.unread( ch );
-        }
-
+        this.reader.unread( ch );
         return token.toString();
     }
 

@@ -1,3 +1,9 @@
+# Output directories
+out/
+
+# Workspace
+.idea/workspace.xml
+
 # Compiled class file
 *.class
 
